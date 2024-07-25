@@ -1,0 +1,7 @@
+image: new_start2.pgm
+resolution: 0.050000
+origin: [-7.038854, -4.370010, 0.000000]  # -7.038854   -4.270010
+negate: 0                                 # -6.898854
+occupied_thresh: 0.65
+free_thresh: 0.196
+

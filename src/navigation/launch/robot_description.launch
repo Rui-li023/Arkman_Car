@@ -1,0 +1,8 @@
+<launch>
+  <!-- Load URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find navigation)/urdf/arkerman_robot.urdf'" />
+
+  <!-- Robot State Publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+</launch>

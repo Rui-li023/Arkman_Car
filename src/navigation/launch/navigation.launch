@@ -1,0 +1,56 @@
+<launch>
+  <!-- Load URDF and publish TF -->
+  <include file="$(find navigation)/launch/robot_description.launch" />
+
+  <!-- 设置需要用于导航的地图-->    
+  <arg name="map_file" default="$(find navigation)/map/new_start2.yaml"/> 
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"></node> 
+
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_link" args="0 0 0 0 0 0 /livox_frame /base_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="map_red_to_camera_init" args="0 0 0 0 0 0 map /camera_init 100" />   -->
+
+  <!-- 发布从 /body 到 /livox_frame 的固定变换 -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="body_to_livox" args="0 0 0 0 0 0 1 body livox_frame"/>
+
+  <!-- 发布从 /livox_frame 到 /base_link 的固定变换，位移为正前方5cm -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="livox_to_base" args="0.05 0 0 0 0 0 1 livox_frame base_link"/>
+
+
+  <!-- Start the AMCL node -->
+  <!-- <node name="amcl" pkg="amcl" type="amcl" output="screen">
+    <param name="odom_model_type" value="diff"/>
+    <param name="base_frame_id" value="/livox_frame"/>
+    <param name="odom_frame_id" value="/odom"/>
+    <param name="global_frame_id" value="/map"/>
+    <param name="update_min_d" value="0.2"/>
+    <param name="update_min_a" value="0.2"/>
+    <param name="resample_interval" value="1"/>
+    <param name="transform_tolerance" value="0.1"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="2000"/>
+    <param name="laser_lambda_short" value="0.1"/>
+    <param name="laser_model_type" value="likelihood_field"/>
+    <param name="laser_z_hit" value="0.95"/>
+    <param name="laser_z_rand" value="0.05"/>
+    <param name="odom_alpha1" value="0.2"/>
+    <param name="odom_alpha2" value="0.2"/>
+    <param name="odom_alpha3" value="0.2"/>
+    <param name="odom_alpha4" value="0.2"/>
+    <param name="odom_alpha5" value="0.2"/>
+    <param name="tf_broadcast" value="true"/>
+    <remap from="scan" to="base_scan"/>
+    <remap from="odom" to="Odometry"/>
+  </node> -->
+
+  <node name='odom_trans' pkg="navigation" type="chassis_odom"/>
+  <node name='initpose' pkg="navigation" type="initpose_node"/>
+
+<!-- 
+  <rosparam file="$(find navigation)/config/global_costmap_params.yaml" command="load"/>
+  <rosparam file="$(find navigation)/config/local_costmap_params.yaml" command="load"/>
+  <rosparam file="$(find navigation)/config/costmap_common_params.yaml" command="load"/> -->
+  
+  <include file="$(find navigation)/launch/include/teb_local_planner.launch">
+  <arg name="car_mode" value="mini_mec"/> </include>
+
+</launch>

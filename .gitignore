@@ -1,0 +1,45 @@
+# ROS specific
+build/
+devel/
+install/
+log/
+*.bag
+*.log
+
+# Python specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.pdb
+
+# C++ specific
+*.o
+*.a
+*.so
+*.d
+*.dSYM/
+
+# Ignore node_modules if using Node.js
+node_modules/
+
+# Ignore virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS specific
+.DS_Store
+
+# Linux specific
+*~
+
+#
+*.pcd
